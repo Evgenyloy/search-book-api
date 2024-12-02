@@ -1,10 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IBooksItem } from '../components/booksItem/booksItem';
+import { IBooksItem } from '../components/booksItem/BooksItem';
+import { IFilteredBooksArgs } from '../types/types';
 
-interface IQueryRequest {
-  items: {};
-}
-
+const apikey = 'AIzaSyA8lwTxYCrpmhOV078A5TESHVDRm6zpgOQ';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
@@ -13,18 +11,20 @@ export const apiSlice = createApi({
     headers: {},
   }),
   endpoints: (builder) => ({
-    getBooks: builder.query<IBooksItem[], void>({
-      query: (/* search, orderBy, subject */) => ({
-        url: '/volumes?q=flowers+subject=art&orderBy=newest&key=',
+    getBooks: builder.query<IBooksItem[], IFilteredBooksArgs>({
+      query: ({ search, subject, orderBy }) => ({
+        url: `/volumes?q=${search}+subject=${subject}&orderBy=${orderBy}&key=AIzaSyA8lwTxYCrpmhOV078A5TESHVDRm6zpgOQ`,
       }),
       transformResponse: (response: any, meta, arg) => {
+        console.log(response);
+
         const data = response.items?.map((item: any, index: any) => ({
-          author: item.volumeInfo.authors[0],
-          img: item.volumeInfo.imageLinks.thumbnail,
-          category: item.volumeInfo.categories[0],
-          title: item.volumeInfo.title,
+          author: item.volumeInfo?.authors,
+          img: item.volumeInfo?.imageLinks?.thumbnail,
+          category: item.volumeInfo?.categories,
+          title: item.volumeInfo?.title,
           id: item.id,
-          description: item.volumeInfo.description,
+          description: item.volumeInfo?.description,
         }));
 
         return data;

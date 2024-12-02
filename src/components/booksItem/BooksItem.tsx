@@ -19,14 +19,11 @@ const BooksItem: FC<IBooksItem> = ({ book }) => {
 
   return (
     <div className="books__item">
-      <div className="d">sdf</div>
       <div className="books__img-cont">
         <img src={img} alt="" className="books__img" />
       </div>
       <p className="books__category">{category}</p>
-      <a className="books__title" href="#">
-        {title}
-      </a>
+      <h2 className="books__title">{title}</h2>
       <p className="books__author">{author}</p>
     </div>
   );
