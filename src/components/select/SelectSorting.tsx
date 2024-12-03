@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, forwardRef } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setSorting } from '../../slices/slice';
 import { sortingBy } from '../../data';
 import { handleSelectClick } from '../../utils/utils';
+import { Ref, Props } from '../../types/types';
 
 function renderView(
   sortingBy: {
@@ -32,43 +33,30 @@ function renderView(
   return selectItems;
 }
 
-function SelectSorting() {
-  const dispatch = useAppDispatch();
-  const [sort, setSort] = useState('relevance');
-  const [sortDisplay, setSortDisplay] = useState(false);
-  const dropdownRef = useRef(null);
+const SelectSorting = forwardRef<Ref, Props>(
+  ({ setSortDisplay, sortDisplay }, dropdownRef) => {
+    const dispatch = useAppDispatch();
+    const [sort, setSort] = useState('relevance');
 
-  useEffect(() => {
-    const handler = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !(dropdownRef.current as HTMLElement).contains(
-          event.target as HTMLElement
-        )
-      ) {
-        setSortDisplay(false);
-      }
-    };
-    document.addEventListener('click', handler);
-  }, [dropdownRef]);
-
-  const renderItems = renderView(sortingBy, sort, (e) =>
-    handleSelectClick(e, setSort, setSortDisplay, dispatch, setSorting)
-  );
-
-  return (
-    <div className="dropdown" ref={dropdownRef}>
-      <p
-        className="dropdown__name"
-        onClick={() => setSortDisplay((display) => !display)}
-      >
-        {sort}{' '}
-      </p>
-      <ul className={sortDisplay ? 'dropdown__list visible' : 'dropdown__list'}>
-        {renderItems}
-      </ul>
-    </div>
-  );
-}
+    const renderItems = renderView(sortingBy, sort, (e) =>
+      handleSelectClick(e, setSort, setSortDisplay, dispatch, setSorting)
+    );
+    return (
+      <div className="dropdown" ref={dropdownRef}>
+        <p
+          className="dropdown__name"
+          onClick={() => setSortDisplay((display) => !display)}
+        >
+          {sort}{' '}
+        </p>
+        <ul
+          className={sortDisplay ? 'dropdown__list visible' : 'dropdown__list'}
+        >
+          {renderItems}
+        </ul>
+      </div>
+    );
+  }
+);
 
 export default SelectSorting;

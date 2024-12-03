@@ -6,12 +6,12 @@ export const handleSelectClick = (
   setFilter: (value: React.SetStateAction<string>) => void,
   setDisplay: (value: React.SetStateAction<boolean>) => void,
   dispatch: AppDispatch,
-  setSlice:
+  setSliceFilter:
     | ActionCreatorWithPayload<string, 'filters/setSorting'>
     | ActionCreatorWithPayload<string, 'filters/setCategories'>
 ) => {
   if (!(e.target instanceof HTMLElement)) return;
   setFilter(e.target.id);
   setDisplay(false);
-  dispatch(setSlice(e.target.id));
+  dispatch(setSliceFilter(e.target.id));
 };

@@ -1,8 +1,9 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState, forwardRef } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setCategories } from '../../slices/slice';
 import { categories } from '../../data';
 import { handleSelectClick } from '../../utils/utils';
+import { Ref } from '../../types/types';
 
 function renderView(
   categories: {
@@ -21,7 +22,7 @@ function renderView(
           type="checkbox"
           className="dropdown__link"
           id={id}
-          data-sort={name}
+          data-sort={data}
           onClick={handleClick}
         >
           {name}
@@ -32,53 +33,43 @@ function renderView(
   return selectItems;
 }
 
-function SelectCategories() {
-  const dispatch = useAppDispatch();
-  const [category, setCategory] = useState('all');
-  const [categoryDisplay, setCategoryDisplay] = useState(false);
-  const dropdownRef = useRef(null);
+export type Props = {
+  categoryDisplay: boolean;
+  setCategoryDisplay: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-  useEffect(() => {
-    const handler = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !(dropdownRef.current as HTMLElement).contains(
-          event.target as HTMLElement
-        )
-      ) {
-        setCategoryDisplay(false);
-      }
-    };
-    document.addEventListener('click', handler);
-  }, [dropdownRef]);
+const SelectCategories = forwardRef<Ref, Props>(
+  ({ setCategoryDisplay, categoryDisplay }, selectCategoryRef) => {
+    const dispatch = useAppDispatch();
+    const [category, setCategory] = useState('all');
 
-  const renderItems = renderView(categories, category, (e) =>
-    handleSelectClick(
-      e,
-      setCategory,
-      setCategoryDisplay,
-      dispatch,
-      setCategories
-    )
-  );
-
-  return (
-    <div className="dropdown" ref={dropdownRef}>
-      <p
-        className="dropdown__name"
-        onClick={(e) => setCategoryDisplay((display) => !display)}
-      >
-        {category}{' '}
-      </p>
-      <ul
-        className={
-          categoryDisplay ? 'dropdown__list visible' : 'dropdown__list'
-        }
-      >
-        {renderItems}
-      </ul>
-    </div>
-  );
-}
+    const renderItems = renderView(categories, category, (e) =>
+      handleSelectClick(
+        e,
+        setCategory,
+        setCategoryDisplay,
+        dispatch,
+        setCategories
+      )
+    );
+    return (
+      <div className="dropdown" ref={selectCategoryRef}>
+        <p
+          className="dropdown__name"
+          onClick={() => setCategoryDisplay((display) => !display)}
+        >
+          {category}{' '}
+        </p>
+        <ul
+          className={
+            categoryDisplay ? 'dropdown__list visible' : 'dropdown__list'
+          }
+        >
+          {renderItems}
+        </ul>
+      </div>
+    );
+  }
+);
 
 export default SelectCategories;

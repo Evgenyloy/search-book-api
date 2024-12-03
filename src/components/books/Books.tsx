@@ -1,5 +1,6 @@
 import { useGetBooksQuery } from '../../api/apiSlice';
 import BooksItem from '../booksItem/BooksItem';
+import Spinner from '../spinner/Spinner';
 import './books.scss';
 import { useAppSelector } from '../../hooks/hooks';
 
@@ -12,7 +13,7 @@ function Books() {
     data: books,
     isError,
     isLoading,
-    status,
+    isSuccess,
   } = useGetBooksQuery({ search, subject, orderBy });
 
   const items = books?.map((book: any) => {
@@ -22,7 +23,10 @@ function Books() {
   return (
     <div className="books">
       <div className="container">
-        <div className="books__inner">{items}</div>
+        <div className="books__inner">
+          {' '}
+          {isLoading && <Spinner />} {isSuccess && items}
+        </div>
       </div>
     </div>
   );

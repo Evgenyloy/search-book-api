@@ -1,4 +1,7 @@
 import { FC } from 'react';
+import { useAppDispatch } from '../../hooks/hooks';
+import { setIds } from '../../slices/slice';
+import { Link } from 'react-router-dom';
 import './booksItem.scss';
 
 export interface IBooksItem {
@@ -9,22 +12,32 @@ export interface IBooksItem {
     id?: string;
     img: string;
     title: string;
+    ids: string;
   };
 }
 
 const BooksItem: FC<IBooksItem> = ({ book }) => {
-  // console.log(book);
-
-  const { img, category, title, author } = book;
+  const dispatch = useAppDispatch();
+  const { img, category, title, author, ids } = book;
 
   return (
     <div className="books__item">
       <div className="books__img-cont">
-        <img src={img} alt="" className="books__img" />
+        {img ? (
+          <img src={img} alt="book" className="books__img" />
+        ) : (
+          <span>no image</span>
+        )}
       </div>
       <p className="books__category">{category}</p>
       <h2 className="books__title">{title}</h2>
       <p className="books__author">{author}</p>
+      <Link
+        to="book"
+        id={ids}
+        className="books__link"
+        onClick={() => dispatch(setIds(ids))}
+      ></Link>
     </div>
   );
 };
