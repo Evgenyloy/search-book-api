@@ -7,6 +7,7 @@
     display: flex;
     flex-direction: column;
     text-align: left;
+    justify-content: space-between;
     background: #fff;
     transition: all 0.1s linear;
     &:hover {
@@ -18,7 +19,7 @@
     &::after {
       position: absolute;
       content: '';
-      z-index: 1000;
+      z-index: 100;
       top: 0;
       left: 0;
       width: 100%;
@@ -53,8 +54,8 @@
   &__category {
     color: rgb(151, 147, 147);
     text-decoration: underline;
-    margin-bottom: 20px;
     background: #fff;
+    align-self: end;
   }
 
   &__title {
@@ -67,5 +68,6 @@
   &__author {
     color: rgb(151, 147, 147);
     background: #fff;
+    margin-bottom: 20px;
   }
 }

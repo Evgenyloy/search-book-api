@@ -13,8 +13,8 @@ export const apiSlice = createApi({
   }),
   endpoints: (builder) => ({
     getBooks: builder.query<IBooksItem[], IFilteredBooksArgs>({
-      query: ({ search, subject, orderBy }) => ({
-        url: `/volumes?q=${search}r+inpublisher=${subject}&orderBy=${orderBy}&printType=books&key=AIzaSyA8lwTxYCrpmhOV078A5TESHVDRm6zpgOQ`,
+      query: ({ search, subject, orderBy, offset, maxResults }) => ({
+        url: `/volumes?q=${search}r+inpublisher=${subject}&orderBy=${orderBy}&printType=books&maxResults=${maxResults}&startIndex=${offset}&key=AIzaSyA8lwTxYCrpmhOV078A5TESHVDRm6zpgOQ`,
       }),
       transformResponse: (response: any) => {
         const data = response.items?.map((item: any) => ({
@@ -25,6 +25,7 @@ export const apiSlice = createApi({
           id: uuidv4(),
           description: item.volumeInfo?.description,
           ids: item?.id,
+          totalItems: response.totalItems,
         }));
 
         return data;

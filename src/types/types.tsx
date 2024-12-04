@@ -7,6 +7,8 @@ export interface IFilteredBooksArgs {
   search: string;
   orderBy: string;
   subject: string;
+  offset: number;
+  maxResults: number;
 }
 
 export interface IBookArg {

@@ -1,11 +1,34 @@
 .books {
-  padding: 50px 0;
-  background-color: #f8f8f8;
 }
 
 .books__inner {
+  height: 100%;
   display: grid;
   gap: 20px;
   justify-content: center;
   grid-template-columns: repeat(auto-fill, minmax(100px, 270px));
+  margin-bottom: 40px;
+}
+
+.books__button {
+  position: relative;
+  top: 0px;
+  width: 210px;
+  margin: 0 auto;
+  display: block;
+  padding: 20px 60px;
+  font-size: 18px;
+  background-color: #fff;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  grid-column: 2/3;
+  transition: all 0.1s linear;
+
+  &:hover {
+    border: 1px solid rgb(145, 145, 145);
+  }
+  &:active {
+    position: relative;
+    top: 2px;
+  }
 }

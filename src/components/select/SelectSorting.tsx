@@ -1,9 +1,10 @@
 import { useState, forwardRef } from 'react';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setSorting } from '../../slices/slice';
 import { sortingBy } from '../../data';
 import { handleSelectClick } from '../../utils/utils';
 import { Ref, Props } from '../../types/types';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function renderView(
   sortingBy: {
@@ -37,9 +38,20 @@ const SelectSorting = forwardRef<Ref, Props>(
   ({ setSortDisplay, sortDisplay }, dropdownRef) => {
     const dispatch = useAppDispatch();
     const [sort, setSort] = useState('relevance');
-
+    const search = useAppSelector((state) => state.book.search);
+    const { pathname } = useLocation();
+    const navigate = useNavigate();
     const renderItems = renderView(sortingBy, sort, (e) =>
-      handleSelectClick(e, setSort, setSortDisplay, dispatch, setSorting)
+      handleSelectClick(
+        e,
+        setSort,
+        setSortDisplay,
+        dispatch,
+        setSorting,
+        search,
+        pathname,
+        navigate
+      )
     );
     return (
       <div className="dropdown" ref={dropdownRef}>

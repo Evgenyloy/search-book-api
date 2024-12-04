@@ -2,8 +2,13 @@ import { BsSearch } from 'react-icons/bs';
 import SelectCategories from '../select/SelectCategories';
 import SelectSorting from '../select/SelectSorting';
 import { useState, useRef, useEffect } from 'react';
-import { setSearching } from '../../slices/slice';
-import { useAppDispatch } from '../../hooks/hooks';
+import {
+  setSearching,
+  setSkipFetch,
+  setLoadingStatus,
+  deleteBooksData,
+} from '../../slices/slice';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './header.module.scss';
 
@@ -35,6 +40,9 @@ function handler(
 
 function Header() {
   const dispatch = useAppDispatch();
+  const skipFetch = useAppSelector((state) => state.book.skipFetch);
+  const searchResult = useAppSelector((state) => state.book.search);
+  const loading = useAppSelector((state) => state.book.loadingStatus);
   const [search, setSearch] = useState('');
 
   const [sortDisplay, setSortDisplay] = useState(false);
@@ -65,23 +73,35 @@ function Header() {
   const navigate = useNavigate();
   const handleSearchClick = () => {
     if (search === '') return;
-    if (pathname !== '/') {
+    if (pathname !== '/#/') {
+      dispatch(deleteBooksData());
       dispatch(setSearching(search));
       setSearch('');
       navigate('/');
+      dispatch(setLoadingStatus(true));
     } else {
+      dispatch(deleteBooksData());
       dispatch(setSearching(search));
       setSearch('');
+      dispatch(setLoadingStatus(true));
+    }
+    if (skipFetch) {
+      dispatch(setSkipFetch(false));
     }
   };
 
   const handleEnterPress = (event: any) => {
-    if (event.key === 'Enter' && pathname !== '/') {
+    if (event.key === 'Enter' && pathname !== '/#/') {
       navigate('/');
+      dispatch(deleteBooksData());
       dispatch(setSearching(search));
       setSearch('');
+      dispatch(setSkipFetch(false));
+      dispatch(setLoadingStatus(true));
     }
   };
+
+  const totalBooks = useAppSelector((state) => state.book.totalBooks);
 
   return (
     <header className="header">
@@ -98,6 +118,19 @@ function Header() {
               onChange={handleSearch}
               onKeyDown={handleEnterPress}
             />
+
+            {loading ? (
+              <span className="header__total-books">searching...</span>
+            ) : (
+              <span className="header__total-books">
+                {(totalBooks as number) > 0 && !loading
+                  ? ` ${totalBooks} 
+                    results found for the query
+                     ${searchResult} `
+                  : ''}
+              </span>
+            )}
+
             <BsSearch
               className="header__search-icon"
               onClick={() => handleSearchClick()}

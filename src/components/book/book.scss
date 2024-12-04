@@ -1,14 +1,20 @@
 .book {
-  background-color: #fff;
-  padding: 50px 0;
+  padding: 100px 0;
+
   span {
     display: block;
   }
+
   &__container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 10px;
   }
+
+  &__wrapper * {
+    background-color: #fff;
+  }
+
   &__img-cont {
     position: relative;
     min-width: 300px;
@@ -31,7 +37,6 @@
     object-fit: cover;
   }
   &__inner {
-    background-color: #fff;
     display: flex;
     gap: 40px;
     margin-bottom: 20px;

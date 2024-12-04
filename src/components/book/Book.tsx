@@ -9,13 +9,7 @@ function renderView(book: IBook) {
     <>
       {' '}
       <span className="book__author">
-        {book?.authors?.map((item, index, arr) => {
-          if (item !== arr[arr.length - 1]) {
-            return item + ', ';
-          } else {
-            return item;
-          }
-        })}
+        {book?.authors ? book?.authors[0] : 'Author unknown'}
       </span>
       <h2 className="book__title">{book?.title}</h2>
       <div className="book__inner">
@@ -28,18 +22,12 @@ function renderView(book: IBook) {
         </div>
         <div className="book__info-inner">
           {book?.description && (
-            <p className="book__description">{book?.description}</p>
+            <p className="book__description">
+              {book?.description.replace(/<\/?[a-zA-Z]+>/gi, '')}
+            </p>
           )}
 
           <ul className="book__additional-info">
-            <li className="book__info-item book__category">
-              Category:{' '}
-              {book?.categories ? (
-                <span>{book?.categories}</span>
-              ) : (
-                <span>no category</span>
-              )}
-            </li>
             <li className="book__info-item book__pageCount">
               Page count: <span>{book?.pageCount}</span>
             </li>
@@ -57,6 +45,14 @@ function renderView(book: IBook) {
             </li>
             <li className="book__info-item book__print-type">
               Print type: <span>{book?.printType}</span>
+            </li>
+            <li className="book__info-item book__category">
+              Category:{' '}
+              {book?.categories ? (
+                <span>{book?.categories}</span>
+              ) : (
+                <span>no category</span>
+              )}
             </li>
             <li className="book__info-item book__language">
               Language: <span>{book?.language}</span>{' '}
@@ -81,8 +77,10 @@ function Book() {
   return (
     <div className="book">
       <div className="book__container">
-        {isLoading && <Spinner />}
-        {isSuccess && renderItem}
+        <div className="book__wrapper">
+          {isLoading && <Spinner />}
+          {isSuccess && renderItem}
+        </div>
       </div>
     </div>
   );

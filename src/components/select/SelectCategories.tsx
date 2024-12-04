@@ -1,9 +1,10 @@
 import { useState, forwardRef } from 'react';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setCategories } from '../../slices/slice';
 import { categories } from '../../data';
 import { handleSelectClick } from '../../utils/utils';
 import { Ref } from '../../types/types';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function renderView(
   categories: {
@@ -42,14 +43,19 @@ const SelectCategories = forwardRef<Ref, Props>(
   ({ setCategoryDisplay, categoryDisplay }, selectCategoryRef) => {
     const dispatch = useAppDispatch();
     const [category, setCategory] = useState('all');
-
+    const search = useAppSelector((state) => state.book.search);
+    const { pathname } = useLocation();
+    const navigate = useNavigate();
     const renderItems = renderView(categories, category, (e) =>
       handleSelectClick(
         e,
         setCategory,
         setCategoryDisplay,
         dispatch,
-        setCategories
+        setCategories,
+        search,
+        pathname,
+        navigate
       )
     );
     return (
