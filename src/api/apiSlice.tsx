@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IBooksItem } from '../components/booksItem/BooksItem';
+import { IBooksItem } from '../types/types';
 import { IBookArg, IFilteredBooksArgs, IBook } from '../types/types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -11,11 +11,13 @@ export const apiSlice = createApi({
     method: 'GET',
     headers: {},
   }),
+  tagTypes: ['Books'],
   endpoints: (builder) => ({
     getBooks: builder.query<IBooksItem[], IFilteredBooksArgs>({
       query: ({ search, subject, orderBy, offset, maxResults }) => ({
-        url: `/volumes?q=${search}r+inpublisher=${subject}&orderBy=${orderBy}&printType=books&maxResults=${maxResults}&startIndex=${offset}&key=AIzaSyA8lwTxYCrpmhOV078A5TESHVDRm6zpgOQ`,
+        url: `/volumes?q=${search}r+inpublisher=${subject}&orderBy=${orderBy}&maxResults=${maxResults}&startIndex=${offset}&printType=all&key=AIzaSyA8lwTxYCrpmhOV078A5TESHVDRm6zpgOQ`,
       }),
+      providesTags: ['Books'],
       transformResponse: (response: any) => {
         const data = response.items?.map((item: any) => ({
           author: item.volumeInfo?.authors,
@@ -30,7 +32,17 @@ export const apiSlice = createApi({
 
         return data;
       },
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCacheData, responseData) => {
+        if (responseData) currentCacheData.push(...responseData);
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
     }),
+
     getBook: builder.query<IBook, IBookArg>({
       query: ({ ids }) => ({
         url: `/volumes/${ids}?key=${apiKey}`,

@@ -1,6 +1,8 @@
 .book {
   padding: 100px 0;
-
+  height: auto;
+  min-height: 100%;
+  background-color: #fff;
   span {
     display: block;
   }
@@ -11,7 +13,7 @@
     padding: 0 10px;
   }
 
-  &__wrapper * {
+  &__wrapper {
     background-color: #fff;
   }
 
@@ -19,7 +21,7 @@
     position: relative;
     min-width: 300px;
     height: 400px;
-    box-shadow: 8px 5px 5px 3px rgba(34, 60, 80, 0.26);
+    box-shadow: 3px 5px 5px 3px rgba(34, 60, 80, 0.26);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,13 +56,25 @@
     margin-bottom: 50px;
     text-align: left;
   }
-  &__author {
+  &__author-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__author,
+  &__back {
     font-weight: 400;
     color: #727272;
     margin-bottom: 10px;
     font-size: 18px;
     margin-bottom: 20px;
     text-align: left;
+  }
+  &__back {
+    cursor: pointer;
+    transition: all 0.1s linear;
+    &:hover {
+      color: #3e3f3a;
+    }
   }
   &__description {
     font-weight: 400;

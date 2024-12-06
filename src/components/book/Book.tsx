@@ -1,16 +1,22 @@
+import { useNavigate, NavigateFunction } from 'react-router-dom';
 import { useGetBookQuery } from '../../api/apiSlice';
 import { useAppSelector } from '../../hooks/hooks';
 import { IBook } from '../../types/types';
 import Spinner from '../spinner/Spinner';
 import './book.scss';
 
-function renderView(book: IBook) {
+function renderView(book: IBook, navigate: NavigateFunction) {
   return (
     <>
       {' '}
-      <span className="book__author">
-        {book?.authors ? book?.authors[0] : 'Author unknown'}
-      </span>
+      <div className="book__author-wrapper">
+        <span className="book__author">
+          {book?.authors ? book?.authors[0] : 'Author unknown'}
+        </span>
+        <span className="book__back" onClick={() => navigate(-1)}>
+          go back
+        </span>
+      </div>
       <h2 className="book__title">{book?.title}</h2>
       <div className="book__inner">
         <div className="book__img-cont">
@@ -72,15 +78,13 @@ function Book() {
     isLoading,
     isSuccess,
   } = useGetBookQuery({ ids });
-  console.log(book?.description);
-  const renderItem = renderView(book as IBook);
+  const navigate = useNavigate();
+  const renderItem = renderView(book as IBook, navigate);
   return (
     <div className="book">
       <div className="book__container">
-        <div className="book__wrapper">
-          {isLoading && <Spinner />}
-          {isSuccess && renderItem}
-        </div>
+        {isLoading && <Spinner />}
+        {isSuccess && renderItem}
       </div>
     </div>
   );

@@ -2,27 +2,19 @@ import { FC } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setIds } from '../../slices/slice';
 import { Link } from 'react-router-dom';
+import { IBooksItem } from '../../types/types';
 import './booksItem.scss';
-
-export interface IBooksItem {
-  author: string[] | undefined;
-  category: string[] | undefined;
-  description?: string | undefined;
-  id?: string;
-  img: string;
-  title: string;
-  ids: string;
-  totalItems: number;
-}
 
 interface IBooksItemProps {
   book: IBooksItem;
 }
 
 const BooksItem: FC<IBooksItemProps> = ({ book }) => {
-  if (!book) return;
-  const dispatch = useAppDispatch();
   const { img, category, title, ids, author } = book;
+  const dispatch = useAppDispatch();
+  const handleClick = () => {
+    dispatch(setIds(ids));
+  };
 
   return (
     <div className="books__item">
@@ -40,7 +32,7 @@ const BooksItem: FC<IBooksItemProps> = ({ book }) => {
         to="book"
         id={ids}
         className="books__link"
-        onClick={() => dispatch(setIds(ids))}
+        onClick={() => handleClick()}
       ></Link>
     </div>
   );

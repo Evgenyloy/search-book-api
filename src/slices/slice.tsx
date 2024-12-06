@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IBooksItem } from '../components/booksItem/BooksItem';
 
 interface IInitialState {
   categories: string;
@@ -7,9 +6,7 @@ interface IInitialState {
   search: string;
   ids: string;
   totalBooks: number | string;
-  skipFetch: boolean;
-  loadingStatus: boolean;
-  booksData: IBooksItem[];
+  offset: number;
 }
 
 const initialState: IInitialState = {
@@ -18,9 +15,7 @@ const initialState: IInitialState = {
   search: '',
   ids: '',
   totalBooks: '',
-  skipFetch: true,
-  loadingStatus: false,
-  booksData: [],
+  offset: 0,
 };
 
 const slice = createSlice({
@@ -42,17 +37,8 @@ const slice = createSlice({
     setTotalBooks: (state, action: PayloadAction<number | ''>) => {
       state.totalBooks = action.payload;
     },
-    setSkipFetch: (state, action: PayloadAction<boolean>) => {
-      state.skipFetch = action.payload;
-    },
-    setLoadingStatus: (state, action: PayloadAction<boolean>) => {
-      state.loadingStatus = action.payload;
-    },
-    setBooksData: (state, action: PayloadAction<IBooksItem[]>) => {
-      state.booksData.push(...action.payload);
-    },
-    deleteBooksData: (state) => {
-      state.booksData = [];
+    setOffset: (state, action: PayloadAction<number | undefined>) => {
+      state.offset = action.payload === 0 ? action.payload : state.offset + 20;
     },
   },
 });
@@ -65,8 +51,5 @@ export const {
   setSearching,
   setIds,
   setTotalBooks,
-  setSkipFetch,
-  setLoadingStatus,
-  setBooksData,
-  deleteBooksData,
+  setOffset,
 } = actions;

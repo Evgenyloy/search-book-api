@@ -2,48 +2,24 @@ import { BsSearch } from 'react-icons/bs';
 import SelectCategories from '../select/SelectCategories';
 import SelectSorting from '../select/SelectSorting';
 import { useState, useRef, useEffect } from 'react';
-import {
-  setSearching,
-  setSkipFetch,
-  setLoadingStatus,
-  deleteBooksData,
-} from '../../slices/slice';
+import { setSearching, setOffset } from '../../slices/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { apiSlice } from '../../api/apiSlice';
+import { handler } from '../../utils/utils';
+import { IHeaderProps } from '../../types/types';
 import './header.module.scss';
 
-function handler(
-  event: MouseEvent,
-  selectSortingRef: React.MutableRefObject<null>,
-  setSortDisplay: React.Dispatch<React.SetStateAction<boolean>>,
-  selectCategoryRef: React.MutableRefObject<null>,
-  setCategoryDisplay: React.Dispatch<React.SetStateAction<boolean>>
-) {
-  if (
-    selectSortingRef.current &&
-    !(selectSortingRef.current as HTMLElement).contains(
-      event.target as HTMLElement
-    )
-  ) {
-    setSortDisplay(false);
-  }
-
-  if (
-    selectCategoryRef.current &&
-    !(selectCategoryRef.current as HTMLElement).contains(
-      event.target as HTMLElement
-    )
-  ) {
-    setCategoryDisplay(false);
-  }
-}
-
-function Header() {
+function Header({
+  setSkip,
+  books,
+  isFetching,
+  isSuccess,
+  booksEnded,
+  skip,
+}: IHeaderProps) {
   const dispatch = useAppDispatch();
-  const skipFetch = useAppSelector((state) => state.book.skipFetch);
-  const searchResult = useAppSelector((state) => state.book.search);
-  const loading = useAppSelector((state) => state.book.loadingStatus);
-  const [search, setSearch] = useState('');
+  const navigate = useNavigate();
 
   const [sortDisplay, setSortDisplay] = useState(false);
   const selectSortingRef = useRef(null);
@@ -51,10 +27,7 @@ function Header() {
   const [categoryDisplay, setCategoryDisplay] = useState(false);
   const selectCategoryRef = useRef(null);
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!(e.target instanceof HTMLInputElement)) return;
-    setSearch(e.target.value);
-  };
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     document.addEventListener('click', (e) =>
@@ -66,42 +39,47 @@ function Header() {
         setCategoryDisplay
       )
     );
+
+    return () => {
+      document.removeEventListener('click', (e) =>
+        handler(
+          e,
+          selectSortingRef,
+          setSortDisplay,
+          selectCategoryRef,
+          setCategoryDisplay
+        )
+      );
+    };
   }, [selectSortingRef, selectCategoryRef]);
 
-  const { pathname } = useLocation();
-
-  const navigate = useNavigate();
-  const handleSearchClick = () => {
-    if (search === '') return;
-    if (pathname !== '/#/') {
-      dispatch(deleteBooksData());
-      dispatch(setSearching(search));
-      setSearch('');
-      navigate('/');
-      dispatch(setLoadingStatus(true));
-    } else {
-      dispatch(deleteBooksData());
-      dispatch(setSearching(search));
-      setSearch('');
-      dispatch(setLoadingStatus(true));
-    }
-    if (skipFetch) {
-      dispatch(setSkipFetch(false));
-    }
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target instanceof HTMLInputElement) setSearch(e.target.value);
   };
 
-  const handleEnterPress = (event: any) => {
-    if (event.key === 'Enter' && pathname !== '/#/') {
+  const handleSearchClick = () => {
+    if (search === '') return;
+    setSkip(false);
+    navigate('/');
+    dispatch(setOffset(0));
+    dispatch(apiSlice.util.resetApiState());
+    dispatch(setSearching(search));
+    setSearch('');
+  };
+
+  const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setSkip(false);
       navigate('/');
-      dispatch(deleteBooksData());
+      dispatch(setOffset(0));
+      dispatch(apiSlice.util.resetApiState());
       dispatch(setSearching(search));
       setSearch('');
-      dispatch(setSkipFetch(false));
-      dispatch(setLoadingStatus(true));
     }
   };
 
   const totalBooks = useAppSelector((state) => state.book.totalBooks);
+  const searchString = useAppSelector((state) => state.book.search);
 
   return (
     <header className="header">
@@ -119,17 +97,26 @@ function Header() {
               onKeyDown={handleEnterPress}
             />
 
-            {loading ? (
-              <span className="header__total-books">searching...</span>
-            ) : (
-              <span className="header__total-books">
-                {(totalBooks as number) > 0 && !loading
-                  ? ` ${totalBooks} 
-                    results found for the query
-                     ${searchResult} `
-                  : ''}
-              </span>
-            )}
+            <p className="header__total-books">
+              {isFetching ? (
+                <span className="header__total-books-sp-1">searching...</span>
+              ) : (totalBooks as number) > 0 && !isFetching ? (
+                <>
+                  <span className="header__total-books-sp-1">
+                    {' '}
+                    {totalBooks} results found or your request
+                  </span>
+                  <span className="header__total-books-sp-2">
+                    {searchString}
+                  </span>
+                </>
+              ) : (
+                ''
+              )}
+              {+totalBooks === 0 && !isFetching && !skip
+                ? 'no results found'
+                : ''}
+            </p>
 
             <BsSearch
               className="header__search-icon"
