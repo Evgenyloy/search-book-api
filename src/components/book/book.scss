@@ -19,12 +19,15 @@
 
   &__img-cont {
     position: relative;
-    min-width: 300px;
-    height: 400px;
+    width: 200px;
+    min-width: 200px;
+    height: 260px;
     box-shadow: 3px 5px 5px 3px rgba(34, 60, 80, 0.26);
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 20px;
+    margin-bottom: 10px;
     span {
       text-align: center;
       font-size: 25px;
@@ -40,17 +43,14 @@
   }
   &__inner {
     display: flex;
-    gap: 40px;
     margin-bottom: 20px;
   }
   &__info-inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: block;
   }
   &__title {
     font-weight: 600;
-    font-size: 35px;
+    font-size: clamp(1.571rem, 1.125vw + 1.314rem, 2.857rem);
     margin-bottom: 10px;
     color: #222626;
     margin-bottom: 50px;
@@ -59,13 +59,13 @@
   &__author-wrapper {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
   }
   &__author,
   &__back {
     font-weight: 400;
-    color: #727272;
-    margin-bottom: 10px;
-    font-size: 18px;
+    color: #707070;
+    font-size: clamp(1rem, 0.25vw + 0.943rem, 1.286rem);
     margin-bottom: 20px;
     text-align: left;
   }
@@ -73,29 +73,30 @@
     cursor: pointer;
     transition: all 0.1s linear;
     &:hover {
-      color: #3e3f3a;
+      color: #0e0d0d;
     }
   }
   &__description {
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(1rem, 0.25vw + 0.943rem, 1.286rem);
     line-height: 1.7;
     margin-bottom: 30px;
     color: #222626;
   }
   &__additional-info {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(auto, 446px) minmax(auto, 446px);
+
     column-gap: 10px;
   }
   &__info-item {
-    font-size: 18px;
+    font-size: clamp(1rem, 0.25vw + 0.943rem, 1.286rem);
     margin-bottom: 20px;
     color: rgb(151, 147, 147);
     span {
       margin-top: 5px;
       color: #3e3f3a;
-      font-size: 18px;
+      font-size: clamp(1rem, 0.25vw + 0.943rem, 1.286rem);
     }
   }
   &__saleInfo {
@@ -108,5 +109,23 @@
         color: #1164c4;
       }
     }
+  }
+  &__error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(1rem, 0.25vw + 0.943rem, 1.286rem);
+  }
+}
+
+@media (max-width: 770px) {
+  .book__inner {
+    display: block;
+  }
+  .book__img-cont {
+    float: left;
+    min-width: 100px;
+    width: 100px;
+    height: 150px;
   }
 }

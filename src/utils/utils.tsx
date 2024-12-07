@@ -6,23 +6,17 @@ import { apiSlice } from '../api/apiSlice';
 
 export const handleSelectClick = (
   e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  setFilter: (value: React.SetStateAction<string>) => void,
   setDisplay: (value: React.SetStateAction<boolean>) => void,
   dispatch: AppDispatch,
   setSliceFilter:
     | ActionCreatorWithPayload<string, 'filters/setSorting'>
     | ActionCreatorWithPayload<string, 'filters/setCategories'>,
-  search: string,
-  pathname: string,
   navigate: NavigateFunction
 ) => {
   if (!(e.target instanceof HTMLElement)) return;
-  if (pathname !== '/#/') {
-    navigate('/');
-  }
+  navigate('/');
   dispatch(setOffset(0));
   dispatch(apiSlice.util.resetApiState());
-  setFilter(e.target.id);
   setDisplay(false);
   dispatch(setSliceFilter(e.target.id));
 };

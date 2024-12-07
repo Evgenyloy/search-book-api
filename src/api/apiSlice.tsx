@@ -1,9 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IBooksItem } from '../types/types';
-import { IBookArg, IFilteredBooksArgs, IBook } from '../types/types';
+import {
+  IBookArg,
+  IFilteredBooksArgs,
+  IBook,
+  IBooksItem,
+} from '../types/types';
+import { apiKey } from './api';
 import { v4 as uuidv4 } from 'uuid';
 
-const apiKey = 'AIzaSyA8lwTxYCrpmhOV078A5TESHVDRm6zpgOQ';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
@@ -15,7 +19,7 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     getBooks: builder.query<IBooksItem[], IFilteredBooksArgs>({
       query: ({ search, subject, orderBy, offset, maxResults }) => ({
-        url: `/volumes?q=${search}r+inpublisher=${subject}&orderBy=${orderBy}&maxResults=${maxResults}&startIndex=${offset}&printType=all&key=AIzaSyA8lwTxYCrpmhOV078A5TESHVDRm6zpgOQ`,
+        url: `/volumes?q=${search}r+inpublisher=${subject}&orderBy=${orderBy}&maxResults=${maxResults}&startIndex=${offset}&key=${apiKey}`,
       }),
       providesTags: ['Books'],
       transformResponse: (response: any) => {
@@ -56,7 +60,7 @@ export const apiSlice = createApi({
           publishedDate: response.volumeInfo?.publishedDate,
           title: response.volumeInfo?.title,
           publisher: response.volumeInfo?.publisher,
-          saleInfo: response.volumeInfo?.canonicalVolumeLink,
+          bookLink: response.volumeInfo?.previewLink,
           categories: response.volumeInfo?.categories,
           printType: response.volumeInfo?.printType,
           contentVersion: response.volumeInfo?.contentVersion,

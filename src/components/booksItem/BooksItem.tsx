@@ -13,11 +13,12 @@ const BooksItem: FC<IBooksItemProps> = ({ book }) => {
   const { img, category, title, ids, author } = book;
   const dispatch = useAppDispatch();
   const handleClick = () => {
-    dispatch(setIds(ids));
+    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+    sessionStorage.setItem('ids', JSON.stringify(ids));
   };
 
   return (
-    <div className="books__item">
+    <div className="books__item" onClick={handleClick}>
       <div className="books__img-cont">
         {img ? (
           <img src={img} alt="book" className="books__img" />
@@ -32,7 +33,7 @@ const BooksItem: FC<IBooksItemProps> = ({ book }) => {
         to="book"
         id={ids}
         className="books__link"
-        onClick={() => handleClick()}
+        onClick={() => dispatch(setIds(ids))}
       ></Link>
     </div>
   );

@@ -1,23 +1,23 @@
 import { BsSearch } from 'react-icons/bs';
+import { CiEraser } from 'react-icons/ci';
 import SelectCategories from '../select/SelectCategories';
 import SelectSorting from '../select/SelectSorting';
 import { useState, useRef, useEffect } from 'react';
-import { setSearching, setOffset } from '../../slices/slice';
+import {
+  setSearching,
+  setOffset,
+  setCategories,
+  setSorting,
+  setTotalBooks,
+} from '../../slices/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiSlice } from '../../api/apiSlice';
 import { handler } from '../../utils/utils';
 import { IHeaderProps } from '../../types/types';
-import './header.module.scss';
+import './header.scss';
 
-function Header({
-  setSkip,
-  books,
-  isFetching,
-  isSuccess,
-  booksEnded,
-  skip,
-}: IHeaderProps) {
+function Header({ setSkip, isFetching, skip }: IHeaderProps) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -68,6 +68,7 @@ function Header({
   };
 
   const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (search === '') return;
     if (event.key === 'Enter') {
       setSkip(false);
       navigate('/');
@@ -76,6 +77,15 @@ function Header({
       dispatch(setSearching(search));
       setSearch('');
     }
+  };
+
+  const handleClear = () => {
+    setSkip(true);
+    dispatch(setSearching(''));
+    dispatch(setCategories('all'));
+    dispatch(setSorting('relevance'));
+    dispatch(setTotalBooks(0));
+    dispatch(apiSlice.util.resetApiState());
   };
 
   const totalBooks = useAppSelector((state) => state.book.totalBooks);
@@ -89,13 +99,26 @@ function Header({
             <Link to="/">Search for books</Link>
           </h1>
           <div className="header__search-inner">
-            <input
-              type="text"
-              className="header__search"
-              value={search}
-              onChange={handleSearch}
-              onKeyDown={handleEnterPress}
-            />
+            <div className="header__input-inner">
+              <input
+                name="input"
+                type="text"
+                className="header__search"
+                value={search}
+                onChange={handleSearch}
+                onKeyDown={handleEnterPress}
+              />
+              <div className="header__search-icon-inner">
+                <BsSearch
+                  className="header__search-icon search-icon-1"
+                  onClick={() => handleSearchClick()}
+                />
+                <CiEraser
+                  className="header__search-icon search-icon-2"
+                  onClick={() => handleClear()}
+                />
+              </div>
+            </div>
 
             <p className="header__total-books">
               {isFetching ? (
@@ -117,11 +140,6 @@ function Header({
                 ? 'no results found'
                 : ''}
             </p>
-
-            <BsSearch
-              className="header__search-icon"
-              onClick={() => handleSearchClick()}
-            />
           </div>
           <div className="header__filter filter">
             <div className="filter__inner">

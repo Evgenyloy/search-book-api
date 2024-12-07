@@ -23,7 +23,7 @@ export interface IBook {
   publishedDate: string;
   title: string;
   publisher: string;
-  saleInfo: string;
+  bookLink: string;
   categories: string;
   printType: string;
   contentVersion: string;
@@ -31,16 +31,11 @@ export interface IBook {
 }
 
 export type Ref = HTMLDivElement;
-export type Props = {
-  sortDisplay: boolean;
-  setSortDisplay: React.Dispatch<React.SetStateAction<boolean>>;
-};
 
 export interface IBooksProps {
   books: IBooksItem[];
   isSuccess: boolean;
   isFetching: boolean;
-  booksEnded: boolean;
   isError: boolean;
 }
 
@@ -49,7 +44,6 @@ export interface IHeaderProps {
   books: IBooksItem[];
   isSuccess: boolean;
   isFetching: boolean;
-  booksEnded: boolean;
   skip: boolean;
 }
 
@@ -63,3 +57,13 @@ export interface IBooksItem {
   ids: string;
   totalItems: number;
 }
+
+export type TSelectCategoriesProps = {
+  categoryDisplay: boolean;
+  setCategoryDisplay: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type TSelectSortingProps = {
+  sortDisplay: boolean;
+  setSortDisplay: React.Dispatch<React.SetStateAction<boolean>>;
+};

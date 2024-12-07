@@ -1,22 +1,13 @@
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import { useBooksQuery } from '../../hooks/useBooksQuery';
 import Header from '../header/Header';
 import Books from '../books/Books';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import MainLayout from '../mainLayout/MainLayout';
 import Book from '../book/Book';
-import { useBooksQuery } from '../../hooks/useBooksQuery';
-import './App.css';
 
 function App() {
-  const {
-    books,
-    isFetching,
-    isSuccess,
-    isError,
-    setSkip,
-    isLoading,
-    booksEnded,
-    skip,
-  } = useBooksQuery();
+  const { books, isFetching, isSuccess, isError, setSkip, skip } =
+    useBooksQuery();
 
   return (
     <Router>
@@ -26,7 +17,6 @@ function App() {
           books={books}
           isSuccess={isSuccess}
           isFetching={isFetching}
-          booksEnded={booksEnded}
           skip={skip}
         />
         <Routes>
@@ -39,7 +29,6 @@ function App() {
                   isSuccess={isSuccess}
                   isFetching={isFetching}
                   isError={isError}
-                  booksEnded={booksEnded}
                 />
               }
             />

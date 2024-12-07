@@ -1,36 +1,36 @@
 import { setOffset } from '../../slices/slice';
+import { BsQuestionCircle } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { IBooksProps } from '../../types/types';
+import { useScrollSave } from '../../hooks/useScrollSave';
 import BooksItem from '../booksItem/BooksItem';
 import Spinner from '../spinner/Spinner';
-import { IBooksProps, IBooksItem } from '../../types/types';
 import './books.scss';
 
 const Books = ({ books, isFetching, isSuccess, isError }: IBooksProps) => {
-  const dispatch = useAppDispatch();
   const offset = useAppSelector((state) => state.book.offset);
+  const search = useAppSelector((state) => state.book.search);
+  const dispatch = useAppDispatch();
 
-  if (books.length < offset + 20) {
-    console.log(books.length, offset + 20);
-  } else {
-    console.log(books.length, offset + 20);
-  }
+  useScrollSave(books);
 
-  const items = books?.map((book: IBooksItem) => {
+  const items = books?.map((book) => {
     return <BooksItem book={book} key={book.id} />;
   });
-
-  const renderItems = isSuccess ? items : null;
   const spinner = isFetching && books?.length === 0 ? <Spinner /> : null;
+
   return (
     <div className="books">
       <div className="container">
         <div className="books__inner">
           {' '}
           {isError ? (
-            <div className="books__error">Error! Please reload the page</div>
+            <div className="books__error">
+              Error! Please reload the page or try again later{' '}
+            </div>
           ) : null}
           {spinner}
-          {renderItems}
+          {isSuccess && items}
         </div>
 
         {books?.length !== 0 && (
@@ -46,8 +46,25 @@ const Books = ({ books, isFetching, isSuccess, isError }: IBooksProps) => {
             {isFetching ? 'Loading...' : 'Load more'}
           </button>
         )}
-        {books.length < offset + 20 && !isFetching ? (
-          <div>these are all the results</div>
+        {/* +totalBooks === 0 && !isFetching && !skip */}
+        {books.length < offset + 20 && !isFetching && search ? (
+          <div className="books__results">
+            <span>No more results.</span>
+            <p
+              className="books__tooltip"
+              data-tooltip="Google Книги соблюдают авторские права, договорные и другие
+              юридические ограничения, связанные с местоположением конечного
+              пользователя. В результате некоторые пользователи могут не иметь
+              доступа к книжному контенту из определенных стран. Например,
+              некоторые книги доступны для предварительного просмотра только в
+              США; мы опускаем такие ссылки предварительного просмотра для
+              пользователей из других стран. Таким образом, результаты API
+              ограничены в зависимости от IP-адреса вашего сервера или
+              клиентского приложения."
+            >
+              <BsQuestionCircle className="books__tooltip-icon" />
+            </p>
+          </div>
         ) : null}
       </div>
     </div>

@@ -13,7 +13,9 @@ const initialState: IInitialState = {
   categories: 'all',
   sorting: 'relevance',
   search: '',
-  ids: '',
+  ids: sessionStorage.getItem('ids')
+    ? JSON.parse(sessionStorage.getItem('ids') as string)
+    : {},
   totalBooks: '',
   offset: 0,
 };
