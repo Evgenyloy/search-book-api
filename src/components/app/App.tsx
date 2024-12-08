@@ -12,24 +12,13 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <Header
-          setSkip={setSkip}
-          books={books}
-          isSuccess={isSuccess}
-          isFetching={isFetching}
-          skip={skip}
-        />
+        <Header props={{ setSkip, isFetching }} />
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route
               index
               element={
-                <Books
-                  books={books}
-                  isSuccess={isSuccess}
-                  isFetching={isFetching}
-                  isError={isError}
-                />
+                <Books props={{ books, isSuccess, isFetching, isError }} />
               }
             />
             <Route path="book" element={<Book />} />

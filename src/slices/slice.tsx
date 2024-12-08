@@ -5,7 +5,7 @@ interface IInitialState {
   sorting: string;
   search: string;
   ids: string;
-  totalBooks: number | string;
+  totalBooks: number;
   offset: number;
 }
 
@@ -16,7 +16,7 @@ const initialState: IInitialState = {
   ids: sessionStorage.getItem('ids')
     ? JSON.parse(sessionStorage.getItem('ids') as string)
     : {},
-  totalBooks: '',
+  totalBooks: 0,
   offset: 0,
 };
 
@@ -36,7 +36,7 @@ const slice = createSlice({
     setIds: (state, action: PayloadAction<string>) => {
       state.ids = action.payload;
     },
-    setTotalBooks: (state, action: PayloadAction<number | ''>) => {
+    setTotalBooks: (state, action: PayloadAction<number>) => {
       state.totalBooks = action.payload;
     },
     setOffset: (state, action: PayloadAction<number | undefined>) => {

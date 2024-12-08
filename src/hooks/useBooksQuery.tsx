@@ -28,10 +28,10 @@ export function useBooksQuery() {
     { skip }
   );
   useEffect(() => {
-    if (books.length) {
-      dispatch(setTotalBooks(books[0].totalItems));
+    if (search) {
+      dispatch(setTotalBooks(books[0]?.totalItems ? books[0]?.totalItems : 0));
     }
-  }, [isLoading, isFetching]);
+  }, [isSuccess]);
 
   return {
     isError,

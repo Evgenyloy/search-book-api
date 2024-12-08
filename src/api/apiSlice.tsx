@@ -19,7 +19,7 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     getBooks: builder.query<IBooksItem[], IFilteredBooksArgs>({
       query: ({ search, subject, orderBy, offset, maxResults }) => ({
-        url: `/volumes?q=${search}r+inpublisher=${subject}&orderBy=${orderBy}&maxResults=${maxResults}&startIndex=${offset}&key=${apiKey}`,
+        url: `/volumes?q=${search}+intitle=${subject}&orderBy=${orderBy}&maxResults=${maxResults}&startIndex=${offset}&key=${apiKey}`,
       }),
       providesTags: ['Books'],
       transformResponse: (response: any) => {

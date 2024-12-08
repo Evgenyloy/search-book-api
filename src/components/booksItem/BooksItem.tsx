@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setIds } from '../../slices/slice';
 import { Link } from 'react-router-dom';
@@ -9,7 +8,7 @@ interface IBooksItemProps {
   book: IBooksItem;
 }
 
-const BooksItem: FC<IBooksItemProps> = ({ book }) => {
+function BooksItem({ book }: IBooksItemProps) {
   const { img, category, title, ids, author } = book;
   const dispatch = useAppDispatch();
   const handleClick = () => {
@@ -37,6 +36,6 @@ const BooksItem: FC<IBooksItemProps> = ({ book }) => {
       ></Link>
     </div>
   );
-};
+}
 
 export default BooksItem;

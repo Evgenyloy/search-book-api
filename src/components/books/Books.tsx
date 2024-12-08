@@ -1,13 +1,14 @@
 import { setOffset } from '../../slices/slice';
-import { BsQuestionCircle } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { IBooksProps } from '../../types/types';
 import { useScrollSave } from '../../hooks/useScrollSave';
+import { MdKeyboardDoubleArrowUp } from 'react-icons/md';
 import BooksItem from '../booksItem/BooksItem';
 import Spinner from '../spinner/Spinner';
 import './books.scss';
 
-const Books = ({ books, isFetching, isSuccess, isError }: IBooksProps) => {
+const Books = ({ props }: IBooksProps) => {
+  const { books, isError, isFetching, isSuccess } = props;
   const offset = useAppSelector((state) => state.book.offset);
   const search = useAppSelector((state) => state.book.search);
   const dispatch = useAppDispatch();
@@ -18,7 +19,6 @@ const Books = ({ books, isFetching, isSuccess, isError }: IBooksProps) => {
     return <BooksItem book={book} key={book.id} />;
   });
   const spinner = isFetching && books?.length === 0 ? <Spinner /> : null;
-
   return (
     <div className="books">
       <div className="container">
@@ -46,24 +46,21 @@ const Books = ({ books, isFetching, isSuccess, isError }: IBooksProps) => {
             {isFetching ? 'Loading...' : 'Load more'}
           </button>
         )}
-        {/* +totalBooks === 0 && !isFetching && !skip */}
-        {books.length < offset + 20 && !isFetching && search ? (
+        {books.length < offset + 20 && !isFetching && search && books.length ? (
           <div className="books__results">
             <span>No more results.</span>
-            <p
-              className="books__tooltip"
-              data-tooltip="Google Книги соблюдают авторские права, договорные и другие
-              юридические ограничения, связанные с местоположением конечного
-              пользователя. В результате некоторые пользователи могут не иметь
-              доступа к книжному контенту из определенных стран. Например,
-              некоторые книги доступны для предварительного просмотра только в
-              США; мы опускаем такие ссылки предварительного просмотра для
-              пользователей из других стран. Таким образом, результаты API
-              ограничены в зависимости от IP-адреса вашего сервера или
-              клиентского приложения."
-            >
-              <BsQuestionCircle className="books__tooltip-icon" />
-            </p>
+            {books.length > 10 && (
+              <MdKeyboardDoubleArrowUp
+                className="books__results-icon"
+                onClick={() =>
+                  window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth',
+                  })
+                }
+              />
+            )}
           </div>
         ) : null}
       </div>

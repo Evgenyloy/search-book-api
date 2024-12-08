@@ -1,94 +1,55 @@
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useRef } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { CiEraser } from 'react-icons/ci';
 import SelectCategories from '../select/SelectCategories';
 import SelectSorting from '../select/SelectSorting';
-import { useState, useRef, useEffect } from 'react';
-import {
-  setSearching,
-  setOffset,
-  setCategories,
-  setSorting,
-  setTotalBooks,
-} from '../../slices/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { Link, useNavigate } from 'react-router-dom';
-import { apiSlice } from '../../api/apiSlice';
-import { handler } from '../../utils/utils';
 import { IHeaderProps } from '../../types/types';
+import HeaderResults from './HeaderResults';
+import { clearAll, searchBook } from '../../utils/utils';
+import useSelectClose from '../../hooks/useSelectClose';
 import './header.scss';
 
-function Header({ setSkip, isFetching, skip }: IHeaderProps) {
+function Header({ props }: IHeaderProps) {
+  const { isFetching, setSkip } = props;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [sortDisplay, setSortDisplay] = useState(false);
+  const [sortDisplayShow, setSortDisplayShow] = useState(false);
   const selectSortingRef = useRef(null);
 
-  const [categoryDisplay, setCategoryDisplay] = useState(false);
+  const [categoryDisplayShow, setCategoryDisplayShow] = useState(false);
   const selectCategoryRef = useRef(null);
 
   const [search, setSearch] = useState('');
+  const bookLength = useAppSelector(
+    (state) => state.api?.queries?.getBooks?.data
+  );
 
-  useEffect(() => {
-    document.addEventListener('click', (e) =>
-      handler(
-        e,
-        selectSortingRef,
-        setSortDisplay,
-        selectCategoryRef,
-        setCategoryDisplay
-      )
-    );
-
-    return () => {
-      document.removeEventListener('click', (e) =>
-        handler(
-          e,
-          selectSortingRef,
-          setSortDisplay,
-          selectCategoryRef,
-          setCategoryDisplay
-        )
-      );
-    };
-  }, [selectSortingRef, selectCategoryRef]);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target instanceof HTMLInputElement) setSearch(e.target.value);
-  };
+  useSelectClose(
+    selectSortingRef,
+    setSortDisplayShow,
+    selectCategoryRef,
+    setCategoryDisplayShow
+  );
 
   const handleSearchClick = () => {
-    if (search === '') return;
-    setSkip(false);
-    navigate('/');
-    dispatch(setOffset(0));
-    dispatch(apiSlice.util.resetApiState());
-    dispatch(setSearching(search));
-    setSearch('');
+    if (!search) return;
+    searchBook(dispatch, setSkip, setSearch, search, navigate, bookLength);
   };
 
   const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (search === '') return;
+    if (!search) return;
     if (event.key === 'Enter') {
-      setSkip(false);
-      navigate('/');
-      dispatch(setOffset(0));
-      dispatch(apiSlice.util.resetApiState());
-      dispatch(setSearching(search));
-      setSearch('');
+      searchBook(dispatch, setSkip, setSearch, search, navigate, bookLength);
     }
   };
 
-  const handleClear = () => {
-    setSkip(true);
-    dispatch(setSearching(''));
-    dispatch(setCategories('all'));
-    dispatch(setSorting('relevance'));
-    dispatch(setTotalBooks(0));
-    dispatch(apiSlice.util.resetApiState());
+  const handleClearAll = () => {
+    clearAll(dispatch, setSkip, setSearch, navigate);
   };
 
-  const totalBooks = useAppSelector((state) => state.book.totalBooks);
   const searchString = useAppSelector((state) => state.book.search);
 
   return (
@@ -105,7 +66,7 @@ function Header({ setSkip, isFetching, skip }: IHeaderProps) {
                 type="text"
                 className="header__search"
                 value={search}
-                onChange={handleSearch}
+                onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={handleEnterPress}
               />
               <div className="header__search-icon-inner">
@@ -115,30 +76,13 @@ function Header({ setSkip, isFetching, skip }: IHeaderProps) {
                 />
                 <CiEraser
                   className="header__search-icon search-icon-2"
-                  onClick={() => handleClear()}
+                  onClick={() => handleClearAll()}
                 />
               </div>
             </div>
 
             <p className="header__total-books">
-              {isFetching ? (
-                <span className="header__total-books-sp-1">searching...</span>
-              ) : (totalBooks as number) > 0 && !isFetching ? (
-                <>
-                  <span className="header__total-books-sp-1">
-                    {' '}
-                    {totalBooks} results found or your request
-                  </span>
-                  <span className="header__total-books-sp-2">
-                    {searchString}
-                  </span>
-                </>
-              ) : (
-                ''
-              )}
-              {+totalBooks === 0 && !isFetching && !skip
-                ? 'no results found'
-                : ''}
+              {searchString && <HeaderResults isFetching={isFetching} />}
             </p>
           </div>
           <div className="header__filter filter">
@@ -146,16 +90,16 @@ function Header({ setSkip, isFetching, skip }: IHeaderProps) {
               <p className="filter__name">Categories</p>
               <SelectCategories
                 ref={selectCategoryRef}
-                categoryDisplay={categoryDisplay}
-                setCategoryDisplay={setCategoryDisplay}
+                categoryDisplay={categoryDisplayShow}
+                setCategoryDisplay={setCategoryDisplayShow}
               />
             </div>
             <div className="filter__inner">
               <p className="filter__name">Sorting by</p>
               <SelectSorting
                 ref={selectSortingRef}
-                sortDisplay={sortDisplay}
-                setSortDisplay={setSortDisplay}
+                sortDisplay={sortDisplayShow}
+                setSortDisplay={setSortDisplayShow}
               />
             </div>
           </div>

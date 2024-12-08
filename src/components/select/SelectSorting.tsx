@@ -36,12 +36,14 @@ function renderView(
 
 const SelectSorting = forwardRef<Ref, TSelectSortingProps>(
   ({ setSortDisplay, sortDisplay }, dropdownRef) => {
+    const sort = useAppSelector((state) => state.book.sorting);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const sort = useAppSelector((state) => state.book.sorting);
+
     const renderItems = renderView(sortingBy, sort, (e) =>
       handleSelectClick(e, setSortDisplay, dispatch, setSorting, navigate)
     );
+
     return (
       <div className="dropdown" ref={dropdownRef}>
         <p

@@ -33,18 +33,19 @@ export interface IBook {
 export type Ref = HTMLDivElement;
 
 export interface IBooksProps {
-  books: IBooksItem[];
-  isSuccess: boolean;
-  isFetching: boolean;
-  isError: boolean;
+  props: {
+    books: IBooksItem[];
+    isSuccess: boolean;
+    isFetching: boolean;
+    isError: boolean;
+  };
 }
 
 export interface IHeaderProps {
-  setSkip: React.Dispatch<React.SetStateAction<boolean>>;
-  books: IBooksItem[];
-  isSuccess: boolean;
-  isFetching: boolean;
-  skip: boolean;
+  props: {
+    setSkip: React.Dispatch<React.SetStateAction<boolean>>;
+    isFetching: boolean;
+  };
 }
 
 export interface IBooksItem {

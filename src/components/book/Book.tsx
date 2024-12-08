@@ -2,8 +2,8 @@ import { useNavigate, NavigateFunction } from 'react-router-dom';
 import { useGetBookQuery } from '../../api/apiSlice';
 import { useAppSelector } from '../../hooks/hooks';
 import { IBook } from '../../types/types';
-import { useEffect } from 'react';
 import Spinner from '../spinner/Spinner';
+import BookInfo from './BookInfo';
 import './book.scss';
 
 function renderView(book: IBook, navigate: NavigateFunction) {
@@ -33,43 +33,7 @@ function renderView(book: IBook, navigate: NavigateFunction) {
               {book?.description.replace(/<\/?[a-zA-Z]+>/gi, '')}
             </p>
           )}
-
-          <ul className="book__additional-info">
-            <li className="book__info-item book__pageCount">
-              Page count: <span>{book?.pageCount}</span>
-            </li>
-            <li className="book__info-item book__publisher">
-              Publisher: <span>{book?.publisher}</span>
-            </li>
-            <li className="book__info-item book__publishedDate">
-              Published date: <span>{book?.publishedDate}</span>
-            </li>
-
-            <li className="book__info-item book__content-version">
-              Content version: <span>{book?.contentVersion}</span>
-            </li>
-            <li className="book__info-item book__print-type">
-              Print type: <span>{book?.printType}</span>
-            </li>
-            <li className="book__info-item book__language">
-              Language: <span>{book?.language}</span>{' '}
-            </li>
-            <li className="book__info-item book__category">
-              Category:{' '}
-              {book?.categories ? (
-                <span>{book?.categories}</span>
-              ) : (
-                <span>no category</span>
-              )}
-            </li>
-            <a
-              href={book?.bookLink}
-              target="_blank"
-              className="book__info-item book__saleInfo"
-            >
-              Book info: <span>{book?.title}</span>
-            </a>
-          </ul>
+          <BookInfo book={book} />
         </div>
       </div>
     </>
@@ -77,19 +41,14 @@ function renderView(book: IBook, navigate: NavigateFunction) {
 }
 
 function Book() {
-  const ids = useAppSelector((state) => state.book.ids);
   const navigate = useNavigate();
+  const ids = useAppSelector((state) => state.book.ids);
   const {
     data: book,
     isError,
     isLoading,
     isSuccess,
-    isFetching,
   } = useGetBookQuery({ ids });
-
-  useEffect(() => {
-    document.querySelector('.book')?.scrollIntoView({ behavior: 'smooth' });
-  }, [isFetching]);
 
   const renderItem = renderView(book as IBook, navigate);
   return (

@@ -36,9 +36,10 @@ function renderView(
 
 const SelectCategories = forwardRef<Ref, TSelectCategoriesProps>(
   ({ setCategoryDisplay, categoryDisplay }, selectCategoryRef) => {
+    const categories = useAppSelector((state) => state.book.categories);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const categories = useAppSelector((state) => state.book.categories);
+
     const renderItems = renderView(categoriesData, categories, (e) =>
       handleSelectClick(
         e,
@@ -48,6 +49,7 @@ const SelectCategories = forwardRef<Ref, TSelectCategoriesProps>(
         navigate
       )
     );
+
     return (
       <div className="dropdown" ref={selectCategoryRef}>
         <p
