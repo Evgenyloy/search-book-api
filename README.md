@@ -1,8 +1,10 @@
-# Тестовое задание на позицию "Frontend разработчик"
-<br/>
 
-:arrow_right: &nbsp;[ссылка на тестовое задание](https://github.com/fugr-ru/frontend-javascript-test-2)
+Запуск: npm run dev<br/>
 
-:arrow_right: &nbsp;[ссылка на решенную задачу](https://test-task-2-alpha.vercel.app) :heavy_check_mark:
+Использовались: React, Redux, React Router Dom, RTK Query.<br/>
 
-Использовались: React, Redux, React Router Dom, RTK Query.
+Cсылка на готовое приложение: https://test-task-2-alpha.vercel.app<br/>
+
+За основу взято тестовое задание: https://github.com/fugr-ru/frontend-javascript-test-2
+
+Список всех тестовых заданий: https://github.com/Hexlet/ru-test-assignments
