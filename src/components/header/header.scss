@@ -13,6 +13,7 @@
     justify-content: center;
     margin-bottom: 10px;
   }
+
   &__search-icon {
     cursor: pointer;
     position: absolute;
@@ -24,15 +25,18 @@
     background: #fff;
     border-radius: 5px;
     transition: all 0.1s linear;
+
     &:hover {
       fill: rgb(61, 61, 61);
       background: #f3f3f3;
       border: 1px solid rgb(190, 190, 190);
     }
+
     &:active {
       top: 2px;
     }
   }
+
   &__title a {
     margin: 0 auto;
     max-width: 450px;
@@ -52,6 +56,7 @@
     border-radius: 5px;
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.15);
+
     &:focus {
       border: 1px solid rgb(119, 119, 119);
     }
@@ -65,10 +70,12 @@
     text-align: center;
     margin-bottom: 15px;
   }
+
   &__total-books-sp-1 {
     display: block;
     margin-bottom: 10px;
   }
+
   &__total-books-sp-2 {
     display: block;
     font-weight: 600;
@@ -79,6 +86,7 @@
   top: 0;
   right: -41px;
 }
+
 .search-icon-2 {
   top: 0;
   right: -84px;
@@ -90,6 +98,7 @@
   display: flex;
   justify-content: space-between;
   gap: 30px;
+
   &__inner {
     display: flex;
     align-items: center;
@@ -106,6 +115,7 @@
   width: 115px;
   position: relative;
   border: 1px solid rgba(122, 122, 122, 0.15);
+
   &__list {
     z-index: 1000;
     position: absolute;
@@ -114,6 +124,7 @@
     height: 100%;
     width: 100%;
     display: none;
+
     &:focus {
       box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.24) inset;
     }
@@ -139,9 +150,11 @@
   &__item {
     cursor: pointer;
   }
+
   &__checkbox {
     display: none;
   }
+
   &__link {
     cursor: pointer;
     display: block;
@@ -165,6 +178,7 @@
   .header__search {
     width: 300px;
   }
+
   .header__input-inner {
     width: 300px;
   }
@@ -180,16 +194,20 @@
   .search-icon-1 {
     right: -56px;
   }
+
   .search-icon-2 {
     right: -100px;
   }
+
   .header__search-inner {
     width: 200px;
     margin: 0 auto;
   }
+
   .header__input-inner {
     width: 100%;
   }
+
   .header__total-books {
     width: 100%;
 
@@ -202,24 +220,30 @@
     flex-direction: column;
     width: 100%;
   }
+
   .header__search-icon {
     position: static;
   }
+
   .header__search-inner {
     width: 100%;
   }
+
   .header__search {
     margin-bottom: 10px;
     width: 100%;
   }
+
   .header__search-icon-inner {
     display: flex;
     gap: 15px;
     margin-bottom: 5px;
   }
+
   .header__total-books {
     width: 100%;
   }
+
   .filter {
     width: 100%;
   }

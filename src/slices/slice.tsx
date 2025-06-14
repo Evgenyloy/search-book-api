@@ -1,13 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IInitialState } from '../types/types';
 
-interface IInitialState {
-  categories: string;
-  sorting: string;
-  search: string;
-  ids: string;
-  totalBooks: number;
-  offset: number;
-}
+
 
 const initialState: IInitialState = {
   categories: 'all',

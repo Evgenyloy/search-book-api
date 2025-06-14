@@ -1,38 +1,11 @@
-import { forwardRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { setCategories } from '../../slices/slice';
-import { categoriesData } from '../../data';
-import { handleSelectClick } from '../../utils/utils';
-import { Ref, TSelectCategoriesProps } from '../../types/types';
-import { useNavigate } from 'react-router-dom';
-
-function renderView(
-  categories: {
-    name: string;
-    id: string;
-    data: string;
-  }[],
-  category: string,
-  handleClick: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
-) {
-  const selectItems = categories.map(({ name, id, data }) => {
-    if (name === category) return;
-    return (
-      <li className="dropdown__item" key={id}>
-        <a
-          type="checkbox"
-          className="dropdown__link"
-          id={id}
-          data-sort={data}
-          onClick={handleClick}
-        >
-          {name}
-        </a>
-      </li>
-    );
-  });
-  return selectItems;
-}
+import { forwardRef } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { setCategories } from "../../slices/slice";
+import { categoriesData } from "../../data";
+import { handleSelectClick } from "../../utils/utils";
+import { Ref, TSelectCategoriesProps } from "../../types/types";
+import { useNavigate } from "react-router-dom";
+import SelectCategoriesView from "./SelectCategoriesView";
 
 const SelectCategories = forwardRef<Ref, TSelectCategoriesProps>(
   ({ setCategoryDisplay, categoryDisplay }, selectCategoryRef) => {
@@ -40,7 +13,7 @@ const SelectCategories = forwardRef<Ref, TSelectCategoriesProps>(
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const renderItems = renderView(categoriesData, categories, (e) =>
+    const renderItems = SelectCategoriesView(categoriesData, categories, (e) =>
       handleSelectClick(
         e,
         setCategoryDisplay,
@@ -56,11 +29,11 @@ const SelectCategories = forwardRef<Ref, TSelectCategoriesProps>(
           className="dropdown__name"
           onClick={() => setCategoryDisplay((display) => !display)}
         >
-          {categories}{' '}
+          {categories}{" "}
         </p>
         <ul
           className={
-            categoryDisplay ? 'dropdown__list visible' : 'dropdown__list'
+            categoryDisplay ? "dropdown__list visible" : "dropdown__list"
           }
         >
           {renderItems}

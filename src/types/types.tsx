@@ -1,4 +1,4 @@
-import store from '../store/store';
+import store from "../store/store";
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -6,7 +6,7 @@ export type AppDispatch = typeof store.dispatch;
 export interface IFilteredBooksArgs {
   search: string;
   orderBy: string;
-  subject: string;
+  categories: string;
   offset: number;
   maxResults: number;
 }
@@ -68,3 +68,12 @@ export type TSelectSortingProps = {
   sortDisplay: boolean;
   setSortDisplay: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+export interface IInitialState {
+  categories: string;
+  sorting: string;
+  search: string;
+  ids: string;
+  totalBooks: number;
+  offset: number;
+}

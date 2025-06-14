@@ -1,5 +1,31 @@
 import { useEffect } from 'react';
-import { handler } from '../utils/utils';
+
+function handler(
+  event: MouseEvent,
+  selectSortingRef: React.MutableRefObject<null>,
+  setSortDisplay: React.Dispatch<React.SetStateAction<boolean>>,
+  selectCategoryRef: React.MutableRefObject<null>,
+  setCategoryDisplay: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  if (
+    selectSortingRef.current &&
+    !(selectSortingRef.current as HTMLElement).contains(
+      event.target as HTMLElement
+    )
+  ) {
+    setSortDisplay(false);
+  }
+
+  if (
+    selectCategoryRef.current &&
+    !(selectCategoryRef.current as HTMLElement).contains(
+      event.target as HTMLElement
+    )
+  ) {
+    setCategoryDisplay(false);
+  }
+}
+
 
 function useSelectClose(
   selectSortingRef: React.MutableRefObject<null>,

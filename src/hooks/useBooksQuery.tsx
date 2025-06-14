@@ -1,12 +1,12 @@
-import { useAppSelector, useAppDispatch } from './hooks';
-import { useState, useEffect } from 'react';
-import { useGetBooksQuery } from '../api/apiSlice';
-import { setTotalBooks } from '../slices/slice';
+import { useAppSelector, useAppDispatch } from "./hooks";
+import { useState, useEffect } from "react";
+import { useGetBooksQuery } from "../api/apiSlice";
+import { setTotalBooks } from "../slices/slice";
 
 export function useBooksQuery() {
   const dispatch = useAppDispatch();
   const offset = useAppSelector((state) => state.book.offset);
-  const subject = useAppSelector((state) => state.book.categories);
+  const categories = useAppSelector((state) => state.book.categories);
   const orderBy = useAppSelector((state) => state.book.sorting);
   const search = useAppSelector((state) => state.book.search);
   const [maxResults, setMaxResults] = useState(20);
@@ -20,7 +20,7 @@ export function useBooksQuery() {
   } = useGetBooksQuery(
     {
       search,
-      subject,
+      categories,
       orderBy,
       offset,
       maxResults,

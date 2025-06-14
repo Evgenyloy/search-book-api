@@ -1,27 +1,27 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IBookArg,
   IFilteredBooksArgs,
   IBook,
   IBooksItem,
-} from '../types/types';
-import { apiKey } from './api';
-import { v4 as uuidv4 } from 'uuid';
+} from "../types/types";
+import { apiKey } from "./api";
+import { v4 as uuidv4 } from "uuid";
 
 export const apiSlice = createApi({
-  reducerPath: 'api',
+  reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://www.googleapis.com/books/v1',
-    method: 'GET',
+    baseUrl: "https://www.googleapis.com/books/v1",
+    method: "GET",
     headers: {},
   }),
-  tagTypes: ['Books'],
+  tagTypes: ["Books"],
   endpoints: (builder) => ({
     getBooks: builder.query<IBooksItem[], IFilteredBooksArgs>({
-      query: ({ search, subject, orderBy, offset, maxResults }) => ({
-        url: `/volumes?q=${search}+intitle=${subject}&orderBy=${orderBy}&maxResults=${maxResults}&startIndex=${offset}&key=${apiKey}`,
+      query: ({ search, categories, orderBy, offset, maxResults }) => ({
+        url: `/volumes?q=${search}+intitle=${categories}&orderBy=${orderBy}&maxResults=${maxResults}&startIndex=${offset}&key=${apiKey}`,
       }),
-      providesTags: ['Books'],
+      providesTags: ["Books"],
       transformResponse: (response: any) => {
         const data = response.items?.map((item: any) => ({
           author: item.volumeInfo?.authors,

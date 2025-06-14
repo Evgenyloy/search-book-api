@@ -1,4 +1,4 @@
-import { useAppSelector } from '../../hooks/hooks';
+import { useAppSelector } from "../../hooks/hooks";
 
 interface IHeaderResultsProps {
   isFetching: boolean;
@@ -15,8 +15,8 @@ function HeaderResults({ isFetching }: IHeaderResultsProps) {
       ) : (
         <>
           <span className="header__total-books-sp-1">
-            {' '}
-            {totalBooks} results found or your request
+            {" "}
+            ~{totalBooks} results found or your request
           </span>
           <span className="header__total-books-sp-2">{searchString}</span>
         </>

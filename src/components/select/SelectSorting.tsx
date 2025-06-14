@@ -1,38 +1,11 @@
-import { forwardRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { setSorting } from '../../slices/slice';
-import { sortingBy } from '../../data';
-import { handleSelectClick } from '../../utils/utils';
-import { Ref, TSelectSortingProps } from '../../types/types';
-import { useNavigate } from 'react-router-dom';
-
-function renderView(
-  sortingBy: {
-    name: string;
-    id: string;
-    data: string;
-  }[],
-  sort: string,
-  handleClick: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
-) {
-  const selectItems = sortingBy.map(({ name, id, data }) => {
-    if (name === sort) return;
-    return (
-      <li className="dropdown__item" key={id}>
-        <a
-          type="checkbox"
-          className="dropdown__link"
-          id={id}
-          data-sort={data}
-          onClick={handleClick}
-        >
-          {name}
-        </a>
-      </li>
-    );
-  });
-  return selectItems;
-}
+import { forwardRef } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { setSorting } from "../../slices/slice";
+import { sortingByData } from "../../data";
+import { handleSelectClick } from "../../utils/utils";
+import { Ref, TSelectSortingProps } from "../../types/types";
+import { useNavigate } from "react-router-dom";
+import SelectSortingView from "./SelectSortingView";
 
 const SelectSorting = forwardRef<Ref, TSelectSortingProps>(
   ({ setSortDisplay, sortDisplay }, dropdownRef) => {
@@ -40,7 +13,7 @@ const SelectSorting = forwardRef<Ref, TSelectSortingProps>(
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const renderItems = renderView(sortingBy, sort, (e) =>
+    const renderItems = SelectSortingView(sortingByData, sort, (e) =>
       handleSelectClick(e, setSortDisplay, dispatch, setSorting, navigate)
     );
 
@@ -50,10 +23,10 @@ const SelectSorting = forwardRef<Ref, TSelectSortingProps>(
           className="dropdown__name"
           onClick={() => setSortDisplay((display) => !display)}
         >
-          {sort}{' '}
+          {sort}{" "}
         </p>
         <ul
-          className={sortDisplay ? 'dropdown__list visible' : 'dropdown__list'}
+          className={sortDisplay ? "dropdown__list visible" : "dropdown__list"}
         >
           {renderItems}
         </ul>
