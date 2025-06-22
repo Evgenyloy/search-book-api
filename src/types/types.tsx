@@ -1,6 +1,10 @@
 import store from "../store/store";
+import { apiSlice } from "../api/apiSlice";
 
-export type RootState = ReturnType<typeof store.getState>;
+export interface RootState {
+  book: IInitialState;
+  [apiSlice.reducerPath]: ReturnType<typeof apiSlice.reducer>;
+}
 export type AppDispatch = typeof store.dispatch;
 
 export interface IFilteredBooksArgs {
@@ -24,7 +28,7 @@ export interface IBook {
   title: string;
   publisher: string;
   bookLink: string;
-  categories: string;
+  categories: string[];
   printType: string;
   contentVersion: string;
   language: string;
@@ -49,14 +53,14 @@ export interface IHeaderProps {
 }
 
 export interface IBooksItem {
-  author: string[] | undefined;
-  category: string[] | undefined;
-  description?: string | undefined;
-  id?: string;
-  img: string;
-  title: string;
+  id: string;
   ids: string;
-  totalItems: number;
+  title: string;
+  author: string[];
+  img: string;
+  category: string[];
+  description: string;
+  totalItems?: number;
 }
 
 export type TSelectCategoriesProps = {
@@ -76,4 +80,35 @@ export interface IInitialState {
   ids: string;
   totalBooks: number;
   offset: number;
+}
+
+export interface GoogleBookResponse {
+  volumeInfo: {
+    authors?: string[];
+    description?: string;
+    imageLinks?: { thumbnail?: string };
+    pageCount?: number;
+    publishedDate?: string;
+    title?: string;
+    publisher?: string;
+    previewLink?: string;
+    categories?: string[];
+    printType?: string;
+    contentVersion?: string;
+    language?: string;
+  };
+}
+
+export interface GoogleBooksResponse {
+  items?: Array<{
+    id: string;
+    volumeInfo: {
+      authors?: string[];
+      imageLinks?: { thumbnail?: string };
+      categories?: string[];
+      title?: string;
+      description?: string;
+    };
+  }>;
+  totalItems?: number;
 }

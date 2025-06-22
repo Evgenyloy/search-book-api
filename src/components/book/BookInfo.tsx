@@ -1,47 +1,46 @@
-import { IBook } from '../../types/types';
+import { IBook } from "../../types/types";
 
 interface IBookInfoProps {
   book: IBook;
 }
 
 function BookInfo({ book }: IBookInfoProps) {
-  return (
-    <ul className="book__additional-info">
-      <li className="book__info-item book__pageCount">
-        Page count: <span>{book?.pageCount}</span>
-      </li>
-      <li className="book__info-item book__publisher">
-        Publisher: <span>{book?.publisher}</span>
-      </li>
-      <li className="book__info-item book__publishedDate">
-        Published date: <span>{book?.publishedDate}</span>
-      </li>
+  const infoItems = [
+    { label: "Page count", value: book?.pageCount },
+    { label: "Publisher", value: book?.publisher },
+    { label: "Published date", value: book?.publishedDate },
+    { label: "Content version", value: book?.contentVersion },
+    { label: "Print type", value: book?.printType },
+    { label: "Language", value: book?.language },
+    {
+      label: "Category",
+      value: book?.categories ? book.categories : "No category",
+    },
+  ];
 
-      <li className="book__info-item book__content-version">
-        Content version: <span>{book?.contentVersion}</span>
-      </li>
-      <li className="book__info-item book__print-type">
-        Print type: <span>{book?.printType}</span>
-      </li>
-      <li className="book__info-item book__language">
-        Language: <span>{book?.language}</span>{' '}
-      </li>
-      <li className="book__info-item book__category">
-        Category:{' '}
-        {book?.categories ? (
-          <span>{book?.categories}</span>
-        ) : (
-          <span>no category</span>
-        )}
-      </li>
-      <a
-        href={book?.bookLink}
-        target="_blank"
-        className="book__info-item book__saleInfo"
-      >
-        Book info: <span>{book?.title}</span>
-      </a>
-    </ul>
+  return (
+    <div className="book__info">
+      <h3 className="book__section-title">Details</h3>
+      <div className="book__info-grid">
+        {infoItems.map((item, index) => (
+          <div key={index} className="book__info-item">
+            <div className="book__info-label">{item.label}</div>
+            <div className="book__info-value">{item.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {book?.bookLink && (
+        <a
+          href={book.bookLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="book__external-link"
+        >
+          View on Google Books ↗
+        </a>
+      )}
+    </div>
   );
 }
 

@@ -5,6 +5,7 @@ import { IBook } from "../../types/types";
 import Spinner from "../spinner/Spinner";
 import BookView from "./BookView";
 import "./book.scss";
+import { useEffect } from "react";
 
 function Book() {
   const ids = useAppSelector((state) => state.book.ids);

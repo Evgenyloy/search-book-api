@@ -1,15 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react';
-import { BsSearch } from 'react-icons/bs';
-import { CiEraser } from 'react-icons/ci';
-import SelectCategories from '../select/SelectCategories';
-import SelectSorting from '../select/SelectSorting';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { IHeaderProps } from '../../types/types';
-import HeaderResults from './HeaderResults';
-import { clearAll, searchBook } from '../../utils/utils';
-import useSelectClose from '../../hooks/useSelectClose';
-import './header.scss';
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
+import { BsSearch } from "react-icons/bs";
+import { CiEraser } from "react-icons/ci";
+import SelectCategories from "../select/SelectCategories";
+import SelectSorting from "../select/SelectSorting";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { IHeaderProps } from "../../types/types";
+import HeaderResults from "./HeaderResults";
+import { clearAll, searchBook } from "../../utils/utils";
+import useSelectClose from "../../hooks/useSelectClose";
+import "./header.scss";
 
 function Header({ props }: IHeaderProps) {
   const { isFetching, setSkip } = props;
@@ -22,7 +22,7 @@ function Header({ props }: IHeaderProps) {
   const [categoryDisplayShow, setCategoryDisplayShow] = useState(false);
   const selectCategoryRef = useRef(null);
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const bookLength = useAppSelector(
     (state) => state.api?.queries?.getBooks?.data
   );
@@ -41,7 +41,7 @@ function Header({ props }: IHeaderProps) {
 
   const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (!search) return;
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       searchBook(dispatch, setSkip, setSearch, search, navigate, bookLength);
     }
   };

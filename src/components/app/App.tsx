@@ -1,4 +1,8 @@
-import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  ScrollRestoration,
+} from "react-router-dom";
 import { useBooksQuery } from "../../hooks/useBooksQuery";
 import Header from "../header/Header";
 import Books from "../books/Books";
@@ -8,24 +12,29 @@ import Book from "../book/Book";
 function App() {
   const { books, isFetching, isSuccess, isError, setSkip } = useBooksQuery();
 
-  return (
-    <Router>
-      <div className="app">
-        <Header props={{ setSkip, isFetching }} />
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route
-              index
-              element={
-                <Books props={{ books, isSuccess, isFetching, isError }} />
-              }
-            />
-            <Route path="book" element={<Book />} />
-          </Route>
-        </Routes>
-      </div>
-    </Router>
-  );
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <div className="app">
+          <Header props={{ setSkip, isFetching }} />
+          <ScrollRestoration /> <MainLayout />
+        </div>
+      ),
+      children: [
+        {
+          index: true,
+          element: <Books props={{ books, isSuccess, isFetching, isError }} />,
+        },
+        {
+          path: "book",
+          element: <Book />,
+        },
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

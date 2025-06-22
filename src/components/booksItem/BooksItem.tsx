@@ -1,8 +1,8 @@
-import { useAppDispatch } from '../../hooks/hooks';
-import { setIds } from '../../slices/slice';
-import { Link } from 'react-router-dom';
-import { IBooksItem } from '../../types/types';
-import './booksItem.scss';
+import { useAppDispatch } from "../../hooks/hooks";
+import { setIds } from "../../slices/slice";
+import { Link } from "react-router-dom";
+import { IBooksItem } from "../../types/types";
+import "./booksItem.scss";
 
 interface IBooksItemProps {
   book: IBooksItem;
@@ -11,9 +11,9 @@ interface IBooksItemProps {
 function BooksItem({ book }: IBooksItemProps) {
   const { img, category, title, ids, author } = book;
   const dispatch = useAppDispatch();
+
   const handleClick = () => {
-    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
-    sessionStorage.setItem('ids', JSON.stringify(ids));
+    sessionStorage.setItem("ids", JSON.stringify(ids));
   };
 
   return (
@@ -25,9 +25,9 @@ function BooksItem({ book }: IBooksItemProps) {
           <span>no image</span>
         )}
       </div>
-      <p className="books__author">{author ? author[0] : 'Author unknown'}</p>
+      <p className="books__author">{author ? author[0] : "Author unknown"}</p>
       <h2 className="books__title">{title}</h2>
-      <p className="books__category">{category ? category : 'no category'}</p>
+      <p className="books__category">{category ? category : "no category"}</p>
       <Link
         to="book"
         id={ids}

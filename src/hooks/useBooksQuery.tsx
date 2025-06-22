@@ -7,6 +7,7 @@ export function useBooksQuery() {
   const dispatch = useAppDispatch();
   const offset = useAppSelector((state) => state.book.offset);
   const categories = useAppSelector((state) => state.book.categories);
+
   const orderBy = useAppSelector((state) => state.book.sorting);
   const search = useAppSelector((state) => state.book.search);
   const [maxResults, setMaxResults] = useState(20);

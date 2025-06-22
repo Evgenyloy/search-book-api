@@ -1,21 +1,19 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IInitialState } from '../types/types';
-
-
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IInitialState } from "../types/types";
 
 const initialState: IInitialState = {
-  categories: 'all',
-  sorting: 'relevance',
-  search: '',
-  ids: sessionStorage.getItem('ids')
-    ? JSON.parse(sessionStorage.getItem('ids') as string)
+  categories: "all",
+  sorting: "relevance",
+  search: "",
+  ids: sessionStorage.getItem("ids")
+    ? JSON.parse(sessionStorage.getItem("ids") as string)
     : {},
   totalBooks: 0,
   offset: 0,
 };
 
 const slice = createSlice({
-  name: 'filters',
+  name: "filters",
   initialState,
   reducers: {
     setCategories: (state, action: PayloadAction<string>) => {
