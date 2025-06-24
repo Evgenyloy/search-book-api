@@ -2,6 +2,7 @@ import {
   createBrowserRouter,
   RouterProvider,
   ScrollRestoration,
+  createHashRouter,
 } from "react-router-dom";
 import { useBooksQuery } from "../../hooks/useBooksQuery";
 import Header from "../header/Header";
@@ -12,7 +13,7 @@ import Book from "../book/Book";
 function App() {
   const { books, isFetching, isSuccess, isError, setSkip } = useBooksQuery();
 
-  const router = createBrowserRouter([
+  const router = createHashRouter([
     {
       path: "/",
       element: (
