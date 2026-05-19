@@ -18,9 +18,24 @@ export const apiSlice = createApi({
   tagTypes: ["Books"],
   endpoints: (builder) => ({
     getBooks: builder.query<IBooksItem[], IFilteredBooksArgs>({
-      query: ({ search, categories, orderBy, offset, maxResults }) => ({
-        url: `/volumes?q=${search}+orderBy=${orderBy}+subject=${categories}&printType=books&maxResults=${maxResults}&startIndex=${offset}&key=${apiKey}`,
-      }),
+      query: ({ search, categories, orderBy, offset, maxResults }) => {
+        let q = search;
+        if (categories && categories !== "all") {
+          q += `+subject:${categories}`;
+        }
+
+        return {
+          url: "/volumes",
+          params: {
+            q,
+            orderBy,
+            printType: "books",
+            maxResults,
+            startIndex: offset,
+            key: apiKey,
+          },
+        };
+      },
       providesTags: ["Books"],
       transformResponse: (response: GoogleBooksResponse): IBooksItem[] => {
         return (
@@ -51,20 +66,24 @@ export const apiSlice = createApi({
       query: ({ ids }) => ({
         url: `/volumes/${ids}?key=${apiKey}`,
       }),
-      transformResponse: (response: GoogleBookResponse): IBook => ({
-        authors: response.volumeInfo?.authors || [],
-        description: response.volumeInfo?.description || "",
-        img: response.volumeInfo?.imageLinks?.thumbnail || "",
-        pageCount: response.volumeInfo?.pageCount || 0,
-        publishedDate: response.volumeInfo?.publishedDate || "",
-        title: response.volumeInfo?.title || "",
-        publisher: response.volumeInfo?.publisher || "",
-        bookLink: response.volumeInfo?.previewLink || "",
-        categories: response.volumeInfo?.categories || [],
-        printType: response.volumeInfo?.printType || "",
-        contentVersion: response.volumeInfo?.contentVersion || "",
-        language: response.volumeInfo?.language || "",
-      }),
+      transformResponse: (response: GoogleBookResponse): IBook => {
+        console.log(response);
+
+        return {
+          authors: response.volumeInfo?.authors || [],
+          description: response.volumeInfo?.description || "",
+          img: response.volumeInfo?.imageLinks?.thumbnail || "",
+          pageCount: response.volumeInfo?.pageCount || 0,
+          publishedDate: response.volumeInfo?.publishedDate || "",
+          title: response.volumeInfo?.title || "",
+          publisher: response.volumeInfo?.publisher || "",
+          bookLink: response.volumeInfo?.previewLink || "",
+          categories: response.volumeInfo?.categories || [],
+          printType: response.volumeInfo?.printType || "",
+          contentVersion: response.volumeInfo?.contentVersion || "",
+          language: response.volumeInfo?.language || "",
+        };
+      },
     }),
   }),
 });

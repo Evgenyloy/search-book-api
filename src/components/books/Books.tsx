@@ -43,7 +43,11 @@ const Books = ({ props }: IBooksProps) => {
             {isFetching ? "Loading..." : "Load more"}
           </button>
         )}
-        {books.length < offset + 20 && !isFetching && search && books.length ? (
+        {books.length < offset + 20 &&
+        !isFetching &&
+        search &&
+        books.length &&
+        !isError ? (
           <div className="books__results">
             <span>No more results.</span>
             {books.length > 10 && (

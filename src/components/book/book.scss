@@ -1,18 +1,18 @@
 :root {
-  --primary-text: #1F2A44;
+  --primary-text: #1f2a44;
   --heading-text: #101827;
-  --accent: #2563EB;
-  --accent-hover: #1D4ED8;
-  --secondary-text: #4B5563;
-  --background: #F9FAFB;
-  --border: #E5E7EB;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --secondary-text: #4b5563;
+  --background: #f9fafb;
+  --border: #e5e7eb;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .book {
   padding: clamp(2rem, 5vw, 4rem) 0;
   background: var(--background);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   min-height: 100vh;
 
   &__container {
@@ -40,14 +40,13 @@
     top: -60px;
     right: 0;
 
-
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.25rem;
     border-radius: 8px;
     background: white;
-    color: var(--accent);
+    color: var(--primary-text);
     border: 1px solid var(--border);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -55,9 +54,9 @@
     font-weight: 500;
 
     &:hover {
-      background: #F3F4F6;
-      color: var(--accent-hover);
-      border-color: var(--accent-hover);
+      background: #f3f4f6;
+      color: var(--heading-text);
+      border-color: var(--primary-text);
     }
   }
 
@@ -100,7 +99,7 @@
 
   &__img-placeholder {
     aspect-ratio: 2/3;
-    background: #F3F4F6;
+    background: #f3f4f6;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,7 +165,7 @@
 }
 
 .book__info {
-  background: #F9FAFB;
+  background: #f9fafb;
   border-radius: 8px;
   padding: 1.5rem;
 }
