@@ -7,8 +7,9 @@ import {
   GoogleBooksResponse,
   GoogleBookResponse,
 } from "../types/types";
-import { apiKey } from "./api";
 import { v4 as uuidv4 } from "uuid";
+
+const API_KEY = "AIzaSyBMv5crc35e1AdRYvjZHRQhokkGabqMe-o";
 
 export const apiSlice = createApi({
   reducerPath: "api",
@@ -32,7 +33,7 @@ export const apiSlice = createApi({
             printType: "books",
             maxResults,
             startIndex: offset,
-            key: apiKey,
+            key: API_KEY,
           },
         };
       },
@@ -64,7 +65,7 @@ export const apiSlice = createApi({
 
     getBook: builder.query<IBook, IBookArg>({
       query: ({ ids }) => ({
-        url: `/volumes/${ids}?key=${apiKey}`,
+        url: `/volumes/${ids}?key=${API_KEY}`,
       }),
       transformResponse: (response: GoogleBookResponse): IBook => {
         console.log(response);
