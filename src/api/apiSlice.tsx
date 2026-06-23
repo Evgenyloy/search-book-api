@@ -29,7 +29,7 @@ export const apiSlice = createApi({
           url: "/volumes",
           params: {
             q,
-            orderBy,
+            orderBy: "relevance",
             printType: "books",
             maxResults,
             startIndex: offset,
@@ -38,8 +38,12 @@ export const apiSlice = createApi({
         };
       },
       providesTags: ["Books"],
-      transformResponse: (response: GoogleBooksResponse): IBooksItem[] => {
-        return (
+      transformResponse: (
+        response: GoogleBooksResponse,
+        meta,
+        arg,
+      ): IBooksItem[] => {
+        let items =
           response.items?.map((item) => ({
             author: item.volumeInfo?.authors || [],
             img: item.volumeInfo?.imageLinks?.thumbnail || "",
@@ -49,8 +53,13 @@ export const apiSlice = createApi({
             description: item.volumeInfo?.description || "",
             ids: item.id,
             totalItems: response.totalItems || 0,
-          })) || []
-        );
+          })) || [];
+
+        if (arg.orderBy === "newest") {
+          items.sort((a, b) => a.title.localeCompare(b.title));
+        }
+
+        return items;
       },
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
