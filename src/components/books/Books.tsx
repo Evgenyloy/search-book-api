@@ -30,7 +30,7 @@ const Books = ({ props }: IBooksProps) => {
           {isSuccess && items}
         </div>
 
-        {books?.length !== 0 && (
+        {books?.length !== 0 && !isError && (
           <button
             className={isFetching ? "books__button disabled" : "books__button"}
             onClick={() => dispatch(setOffset())}
